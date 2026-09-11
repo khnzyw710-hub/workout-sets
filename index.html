@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>אימון סטים</title>
+<meta name="description" content="טיימר אימון כושר אישי - 10 סטים, בטן, שכיבות סמיכה, סקוואטים ותרגיל שוקיים">
+<meta name="theme-color" content="#6c47ff">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="אימון סטים">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="screen-home" class="screen active">
+  <div class="home-wrap">
+    <div class="home-badge dopa-badge">10 סטים · 4 תרגילים</div>
+    <h1 class="app-title">אימון סטים</h1>
+    <p class="app-sub">דקה עבודה, שתי דקות מנוחה, עשר פעמים ברצף</p>
+
+    <div class="exercise-preview">
+      <div class="ex-chip"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="abs"></svg><span>בטן</span></div>
+      <div class="ex-chip"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="pushup"></svg><span>שכיבות סמיכה</span></div>
+      <div class="ex-chip"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="squat"></svg><span>סקוואטים</span></div>
+      <div class="ex-chip"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="calf"></svg><span>שוקיים</span></div>
+    </div>
+
+    <button id="btn-start" class="dopa-btn dopa-btn-yellow btn-huge">התחל אימון</button>
+
+    <div class="stats-row">
+      <div class="dopa-card stat-card">
+        <div class="stat-num" id="stat-total">0</div>
+        <div class="stat-label">אימונים שהושלמו</div>
+      </div>
+      <div class="dopa-card dopa-card-yellow stat-card">
+        <div class="stat-num" id="stat-streak">0</div>
+        <div class="stat-label">רצף ימים</div>
+      </div>
+    </div>
+
+    <div id="history-list" class="history-list"></div>
+  </div>
+</div>
+
+<div id="screen-workout" class="screen">
+  <div class="workout-wrap" data-phase="work">
+
+    <div class="top-row">
+      <button id="btn-stop" class="icon-btn" aria-label="עצור אימון">✕</button>
+      <div class="set-indicator">סט <span id="set-current">1</span> מתוך <span id="set-total">10</span></div>
+      <div style="width:44px"></div>
+    </div>
+
+    <div class="dopa-progress sets-progress">
+      <div id="sets-progress-fill" class="dopa-progress-fill"></div>
+    </div>
+
+    <div class="phase-label" id="phase-label">בצע את כל התרגילים</div>
+
+    <div class="timer-circle-wrap">
+      <svg class="timer-ring" viewBox="0 0 200 200">
+        <circle class="timer-ring-bg" cx="100" cy="100" r="90"></circle>
+        <circle id="timer-ring-fg" class="timer-ring-fg" cx="100" cy="100" r="90"></circle>
+      </svg>
+      <div class="timer-num" id="timer-num">60</div>
+    </div>
+
+    <div class="current-exercise" id="current-exercise-wrap">
+      <svg class="current-ex-icon" id="current-ex-icon" viewBox="0 0 64 64"></svg>
+      <div class="current-ex-name" id="current-ex-name">בטן</div>
+      <div class="current-ex-reps">10 חזרות</div>
+    </div>
+
+    <div class="ex-checklist" id="ex-checklist">
+      <div class="ex-cell" data-ex="abs"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="abs"></svg><span>בטן</span></div>
+      <div class="ex-cell" data-ex="pushup"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="pushup"></svg><span>שכיבות</span></div>
+      <div class="ex-cell" data-ex="squat"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="squat"></svg><span>סקוואט</span></div>
+      <div class="ex-cell" data-ex="calf"><svg class="ex-icon" viewBox="0 0 64 64" data-icon="calf"></svg><span>שוקיים</span></div>
+    </div>
+
+    <div class="rest-message" id="rest-message">
+      <div class="rest-title">מנוחה</div>
+      <div class="rest-sub">תנשום, תשתה מים, עוד סט אחד קרב</div>
+    </div>
+
+    <div class="controls-row">
+      <button id="btn-pause" class="dopa-btn btn-control">השהה</button>
+      <button id="btn-skip" class="dopa-btn dopa-card-purple btn-control btn-control-outline">דלג לשלב הבא</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-done" class="screen">
+  <div class="done-wrap dopa-pop-in">
+    <div class="done-badge">
+      <svg viewBox="0 0 64 64" width="44" height="44" fill="none" stroke="#0a0a0a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12 H44 V26 C44 35 38 41 32 41 C26 41 20 35 20 26 Z"></path>
+        <path d="M20 16 H12 C12 24 16 29 20 30"></path>
+        <path d="M44 16 H52 C52 24 48 29 44 30"></path>
+        <path d="M32 41 V50"></path>
+        <path d="M22 58 H42 L40 50 H24 Z"></path>
+      </svg>
+    </div>
+    <h1 class="app-title">כל הכבוד!</h1>
+    <p class="app-sub">סיימת את כל 10 הסטים - 400 חזרות</p>
+    <div class="done-stats">
+      <div class="dopa-card dopa-card-green done-stat"><div class="stat-num" id="done-duration">0:00</div><div class="stat-label">זמן אימון</div></div>
+      <div class="dopa-card dopa-card-purple done-stat"><div class="stat-num">400</div><div class="stat-label">חזרות סה"כ</div></div>
+    </div>
+    <button id="btn-done-home" class="dopa-btn dopa-btn-yellow btn-huge">חזרה למסך הבית</button>
+  </div>
+</div>
+
+<div id="confirm-modal" class="modal-overlay">
+  <div class="modal-box dopa-card">
+    <div class="modal-title">לעצור את האימון?</div>
+    <div class="modal-sub">ההתקדמות בסט הנוכחי לא תישמר</div>
+    <div class="modal-actions">
+      <button id="btn-confirm-stop" class="dopa-btn" style="background:var(--dopa-red)">כן, לעצור</button>
+      <button id="btn-cancel-stop" class="dopa-btn dopa-card-purple btn-control-outline">להמשיך באימון</button>
+    </div>
+  </div>
+</div>
+
+<script src="icons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
